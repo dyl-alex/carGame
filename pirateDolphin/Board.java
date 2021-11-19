@@ -18,6 +18,7 @@ public class Board extends JPanel implements ActionListener {
     private Timer timer;
     private Image car;
     private Image rock; 
+    private Image road;
 
     private int delay = 140;
 
@@ -45,6 +46,8 @@ public class Board extends JPanel implements ActionListener {
         ImageIcon icar = new ImageIcon("pirateDolphin\\images\\car.png");
         car = icar.getImage();
 
+        ImageIcon iroad = new ImageIcon("pirateDolphin\\images\\road.png");
+        road = iroad.getImage();
     }
 
     private void initGame() {
@@ -61,7 +64,7 @@ public class Board extends JPanel implements ActionListener {
 
         @Override
         public void KeyPressed(KeyEvent e) {
-            
+            int key = e.getKeyCode();
         }
     }
 }
