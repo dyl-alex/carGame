@@ -17,7 +17,9 @@ import javax.swing.Timer;
 public class Board extends JPanel implements ActionListener {
     private Timer timer;
     private Image car;
-    private Image ball; 
+    private Image rock; 
+
+    private int delay = 140;
 
     private int screenX = 500;
     private int screenY = 500;
@@ -28,7 +30,7 @@ public class Board extends JPanel implements ActionListener {
 
     private void initScreen() {
         addKeyListener(new TAdapter());
-        setBackground(color.black);
+        setBackground(Color.black);
         setFocusable(true);
 
         setPreferredSize(new Dimension(screenX,screenY));
@@ -44,4 +46,24 @@ public class Board extends JPanel implements ActionListener {
         car = icar.getImage();
 
     }
+
+    private void initGame() {
+        timer = new Timer(delay, this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private class TAdapter extends KeyAdapter {
+
+        @Override
+        public void KeyPressed(KeyEvent e) {
+            
+        }
+    }
 }
+
+
