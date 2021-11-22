@@ -22,11 +22,17 @@ public class Board extends JPanel implements ActionListener {
 
     private int delay = 140;
 
+    private int carX = 250;
+    private int carY = 420;
+
     private int screenX = 500;
     private int screenY = 500;
 
+    public boolean isRunning = false;
+
     public Board() {
         initScreen();
+
     }
 
     private void initScreen() {
@@ -36,6 +42,7 @@ public class Board extends JPanel implements ActionListener {
 
         setPreferredSize(new Dimension(screenX,screenY));
         loadImages();
+        isRunning = true;
         initGame();
     }
 
@@ -43,15 +50,45 @@ public class Board extends JPanel implements ActionListener {
         ImageIcon irock = new ImageIcon("pirateDolphin\\images\\rock.png");
         rock = irock.getImage();
 
-        ImageIcon icar = new ImageIcon("pirateDolphin\\images\\car.png");
+        ImageIcon icar = new ImageIcon("C:\\Users\\dyale\\OneDrive\\Desktop\\School\\pirateDolphin\\pirateDolphin\\images\\car.png");
         car = icar.getImage();
 
-        ImageIcon iroad = new ImageIcon("pirateDolphin\\images\\road.png");
+        ImageIcon iroad = new ImageIcon("C:\\Users\\dyale\\OneDrive\\Desktop\\School\\pirateDolphin\\pirateDolphin\\images\\road.png");
         road = iroad.getImage();
+        ImageIcon iroad1 = new ImageIcon("C:\\Users\\dyale\\OneDrive\\Desktop\\School\\pirateDolphin\\pirateDolphin\\images\\road.png");
+        road1 = iroad.getImage();
     }
 
     private void initGame() {
         timer = new Timer(delay, this);
+    }
+
+    public void cycleRoad(Image road) {
+        
+        while(isRunning) {
+            
+        }
+    }
+
+    public void paint(Graphics g) {
+        g.drawImage(road, -100, 1, null);
+
+        g.drawImage(car, carX, carY, null);
+    }
+
+    public void update(Graphics g) {
+        paint(g);
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        
+    }
+
+    private void doDrawing(Graphics g) {
+        if (isRunning) {
+
+        }
     }
 
     @Override
