@@ -19,8 +19,15 @@ public class Board extends JPanel implements ActionListener {
     private Image car;
     private Image rock; 
     private Image road;
+    private Image road1;
 
     private int delay = 140;
+
+    private int roadX = -100;
+    private int roadY = 1;
+
+    private int road1X = -100;
+    private int road1Y = 1000;
 
     private int carX = 250;
     private int carY = 420;
@@ -35,7 +42,8 @@ public class Board extends JPanel implements ActionListener {
 
     }
 
-    private void initScreen() {
+    public void initScreen() {
+
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
@@ -59,24 +67,25 @@ public class Board extends JPanel implements ActionListener {
         road1 = iroad.getImage();
     }
 
-    private void initGame() {
-        timer = new Timer(delay, this);
-    }
+    public void initGame() {
+        timer = new Timer(400, this);
+        timer.start();
 
-    public void cycleRoad(Image road) {
+        roadY += 1;
+        road1Y += 1;
+
+        System.out.println("test");
         
-        while(isRunning) {
-            
-        }
     }
-
     public void paint(Graphics g) {
-        g.drawImage(road, -100, 1, null);
-
+        g.drawImage(road, roadX, roadY, null);
+        g.drawImage(road1, road1X, road1Y, null);
         g.drawImage(car, carX, carY, null);
+        
     }
 
     public void update(Graphics g) {
+        
         paint(g);
     }
 
@@ -94,6 +103,8 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
+        initGame();
+        repaint();
         
     }
 
