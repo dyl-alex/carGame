@@ -24,10 +24,10 @@ public class Board extends JPanel implements ActionListener {
     private int delay = 140;
 
     private int roadX = -100;
-    private int roadY = 1;
+    private int roadY = 0;
 
     private int road1X = -100;
-    private int road1Y = 1000;
+    private int road1Y = -625;
 
     private int carX = 250;
     private int carY = 420;
@@ -38,8 +38,10 @@ public class Board extends JPanel implements ActionListener {
     public boolean isRunning = false;
 
     public Board() {
-        initScreen();
+        timer = new Timer(10, this);
+        timer.start();
 
+        initScreen();
     }
 
     public void initScreen() {
@@ -51,6 +53,9 @@ public class Board extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(screenX,screenY));
         loadImages();
         isRunning = true;
+
+        
+
         initGame();
     }
 
@@ -68,14 +73,13 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void initGame() {
-        timer = new Timer(400, this);
-        timer.start();
-
-        roadY += 1;
-        road1Y += 1;
-
-        System.out.println("test");
-        
+        if (roadY >= 500 || road1Y >= 500) {
+            roadY -= 625;
+            road1Y -= 625;
+        } else {
+            roadY += 3;
+            road1Y += 3;    
+        }
     }
     public void paint(Graphics g) {
         g.drawImage(road, roadX, roadY, null);
@@ -103,14 +107,14 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        initGame();
         repaint();
+        initGame();
         
     }
 
     private class TAdapter extends KeyAdapter {
 
-        @Override
+        
         public void KeyPressed(KeyEvent e) {
             int key = e.getKeyCode();
         }
