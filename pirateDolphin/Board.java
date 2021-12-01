@@ -13,15 +13,15 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.text.TabExpander;
 
 public class Board extends JPanel implements ActionListener {
     private Timer timer;
     private Image car;
-    private Image rock; 
+    private Image rock;
+    private Image rock1;
     private Image road;
     private Image road1;
-
-    private int delay = 140;
 
     private int roadX = -100;
     private int roadY = 0;
@@ -36,6 +36,9 @@ public class Board extends JPanel implements ActionListener {
     private int screenY = 500;
 
     public boolean isRunning = false;
+    public boolean right = false;
+    public boolean left = false;
+
 
     public Board() {
         timer = new Timer(10, this);
@@ -45,16 +48,15 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void initScreen() {
-
-        addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
+        addKeyListener(new TAdapter());
 
         setPreferredSize(new Dimension(screenX,screenY));
         loadImages();
         isRunning = true;
 
-        
+
 
         initGame();
     }
@@ -62,13 +64,13 @@ public class Board extends JPanel implements ActionListener {
     private void loadImages() {
         ImageIcon irock = new ImageIcon("pirateDolphin\\images\\rock.png");
         rock = irock.getImage();
+        rock1 = irock.getImage();
 
         ImageIcon icar = new ImageIcon("C:\\Users\\dyale\\OneDrive\\Desktop\\School\\pirateDolphin\\pirateDolphin\\images\\car.png");
         car = icar.getImage();
 
         ImageIcon iroad = new ImageIcon("C:\\Users\\dyale\\OneDrive\\Desktop\\School\\pirateDolphin\\pirateDolphin\\images\\road.png");
         road = iroad.getImage();
-        ImageIcon iroad1 = new ImageIcon("C:\\Users\\dyale\\OneDrive\\Desktop\\School\\pirateDolphin\\pirateDolphin\\images\\road.png");
         road1 = iroad.getImage();
     }
 
@@ -85,6 +87,8 @@ public class Board extends JPanel implements ActionListener {
         g.drawImage(road, roadX, roadY, null);
         g.drawImage(road1, road1X, road1Y, null);
         g.drawImage(car, carX, carY, null);
+
+        
         
     }
 
@@ -95,28 +99,37 @@ public class Board extends JPanel implements ActionListener {
 
     @Override
     public void paintComponent(Graphics g) {
-        
+        super.paintComponent(g);
+
+        doDrawing(g);
     }
 
     private void doDrawing(Graphics g) {
-        if (isRunning) {
 
-        }
+        Toolkit.getDefaultToolkit().sync();
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         repaint();
         initGame();
-        
     }
 
-    private class TAdapter extends KeyAdapter {
+    public class TAdapter extends KeyAdapter {
 
-        
-        public void KeyPressed(KeyEvent e) {
+        @Override
+        public void keyPressed(KeyEvent e) {
+
             int key = e.getKeyCode();
+
+            if (key == KeyEvent.VK_A && !(carX == 120)) {
+                carX -= 130;
+                System.out.println(carX);
+            }
+            if (key == KeyEvent.VK_D && !(carX == 380)) {
+                carX += 130;
+                System.out.println(carX);
+            }
         }
     }
 }
