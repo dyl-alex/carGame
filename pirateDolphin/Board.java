@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.text.TabExpander;
@@ -23,6 +24,9 @@ public class Board extends JPanel implements ActionListener {
     public Random rand = new Random();
     public HashMap<Integer, Integer> rockMap = new HashMap<Integer,Integer>();
     private Timer timer;
+
+    public JButton gameOver = new JButton();
+    public JPanel endPanel = new JPanel();
 
     private Image car;
     private Image rock;
@@ -54,6 +58,10 @@ public class Board extends JPanel implements ActionListener {
 
 
     public Board() {
+        gameOver.setPreferredSize(new Dimension(100,100));
+        endPanel.setPreferredSize(new Dimension(400,400));
+        endPanel.add(gameOver);
+
         timer = new Timer(10, this);
         timer.start();
 
@@ -119,6 +127,7 @@ public class Board extends JPanel implements ActionListener {
         //
         if (((rockY + 104 >= carY) && (carX == rockX + 15)) || ((rock1Y + 104 >= carY) && (carX == rock1X + 15))) {
             System.out.println("Game over");
+            gameOver();
         }
 
     }
@@ -135,6 +144,12 @@ public class Board extends JPanel implements ActionListener {
     public void update(Graphics g) {
         
         paint(g);
+    }
+
+    public void gameOver() {
+        timer.stop();
+
+        add(endPanel);
     }
 
     @Override
