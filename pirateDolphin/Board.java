@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -16,7 +19,11 @@ import javax.swing.Timer;
 import javax.swing.text.TabExpander;
 
 public class Board extends JPanel implements ActionListener {
+    public LinkedList<Image> rockQueue = new LinkedList<Image>();
+    public Random rand = new Random();
+    public HashMap<Integer, Integer> rockMap = new HashMap<Integer,Integer>();
     private Timer timer;
+
     private Image car;
     private Image rock;
     private Image rock1;
@@ -32,6 +39,12 @@ public class Board extends JPanel implements ActionListener {
     private int carX = 250;
     private int carY = 420;
 
+    private int rockX = 0;
+    private int rockY = -110;
+
+    private int rock1X = 0;
+    private int rock1Y = -500;
+
     private int screenX = 500;
     private int screenY = 500;
 
@@ -44,7 +57,13 @@ public class Board extends JPanel implements ActionListener {
         timer = new Timer(10, this);
         timer.start();
 
+        rockMap.put(0, 105);
+        rockMap.put(1,235);
+        rockMap.put(2,365);
+
         initScreen();
+
+        rockQueue.add(rock);
     }
 
     public void initScreen() {
@@ -82,14 +101,35 @@ public class Board extends JPanel implements ActionListener {
             roadY += 3;
             road1Y += 3;    
         }
+        //
+        if (rock1Y >= 500) {
+            rock1Y -= 800;
+            int pos = rand.nextInt(3);
+            System.out.println(pos);
+            rock1X = rockMap.get(pos);
+        } else if (rockY >= 500) {
+            rockY -= 800;
+            int pos = rand.nextInt(3);
+            System.out.println(pos);
+            rockX = rockMap.get(pos);
+        } else {
+            rockY += 3;
+            rock1Y += 3;
+        }
+        //
+        if (((rockY + 104 >= carY) && (carX == rockX + 15)) || ((rock1Y + 104 >= carY) && (carX == rock1X + 15))) {
+            System.out.println("Game over");
+        }
+
     }
+
     public void paint(Graphics g) {
         g.drawImage(road, roadX, roadY, null);
         g.drawImage(road1, road1X, road1Y, null);
         g.drawImage(car, carX, carY, null);
 
-        
-        
+        g.drawImage(rock, rockX, rockY, null);
+        g.drawImage(rock1, rock1X, rock1Y, null);
     }
 
     public void update(Graphics g) {
