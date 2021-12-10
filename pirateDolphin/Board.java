@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ import javax.swing.text.TabExpander;
 
 public class Board extends JPanel implements ActionListener {
     public LinkedList<Image> rockQueue = new LinkedList<Image>();
+    public Stack<Integer> scoreStack = new Stack<Integer>();
     public Random rand = new Random();
     public HashMap<Integer, Integer> rockMap = new HashMap<Integer,Integer>();
     private Timer timer;
@@ -70,10 +72,15 @@ public class Board extends JPanel implements ActionListener {
     public boolean left = false;
 
     public JLabel score = new JLabel();
+    public JLabel currentScore = new JLabel();
     public JLabel highScore = new JLabel();
     public JPanel scoreHolder = new JPanel();
+    public JPanel currentScoreHolder = new JPanel();
+
 
     public Board() {
+        rockQueue.add(rock);
+        
         popUpBackground.setLayout(null);
 
         gameOver.setBounds(150, 50, 200, 50);
@@ -82,19 +89,30 @@ public class Board extends JPanel implements ActionListener {
         popUpBackground.setPreferredSize(new Dimension(500,500));
         popUpBackground.add(gameOver);
 
+        currentScore.setBounds(100,50, 50,50);
+        currentScore.setSize(new Dimension(300,300));
+        currentScore.setVisible(true);
+        currentScore.setText(String.valueOf(count));
+        
         scoreHolder.setBounds(0, 200, 500, 50);
         score.setLocation(250,250);
-        score.setText("Your Score: " + String.valueOf(count));
         score.setFont(new Font("serif", Font.PLAIN, 30));
+        highScore.setFont(new Font("serif", Font.PLAIN, 30));
 
         score.setSize(new Dimension(300,300));
         scoreHolder.add(score);
+        scoreHolder.add(highScore);
+
+        scoreStack.push(0);
 
         popUpBackground.add(scoreHolder);
+
         gameOver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int rand1 = rand.nextInt(3);
                 int rand2 = rand.nextInt(3);
+
+                count = 0;
 
                 rockX = rockMap.get(rand1);
                 rock1X = rockMap.get(rand2);
@@ -114,8 +132,6 @@ public class Board extends JPanel implements ActionListener {
         rockMap.put(2,365);
 
         initScreen();
-
-        rockQueue.add(rock);
     }
 
     public void initScreen() {
@@ -127,11 +143,13 @@ public class Board extends JPanel implements ActionListener {
         loadImages();
         isRunning = true;
 
+        validate();
+
         initGame();
     }
 
     private void loadImages() {
-        ImageIcon irock = new ImageIcon("pirateDolphin\\images\\rock.png");
+        ImageIcon irock = new ImageIcon("C:\\Users\\dyale\\OneDrive\\Desktop\\School\\pirateDolphin\\pirateDolphin\\images\\rock.png");
         rock = irock.getImage();
         rock1 = irock.getImage();
 
@@ -168,7 +186,7 @@ public class Board extends JPanel implements ActionListener {
         }        
         //
         if (((rockY + 104 >= carY && rockY <= 485) && (carX == rockX + 15)) || ((rock1Y + 104 >= carY && rock1Y <= 485) && (carX == rock1X + 15))) {
-            System.out.println("Game over");
+            score.setText("Your Score: " + String.valueOf(count));
             gameOver();
         }
 
@@ -190,8 +208,13 @@ public class Board extends JPanel implements ActionListener {
     public void gameOver() {
         timer.stop();
 
+        if (count > scoreStack.peek()) {
+            scoreStack.push(count);
+        }
+
         t = PopupFactory.getSharedInstance().getPopup(this, popUpBackground, 433, 122);
         t.show();
+        highScore.setText("|| High Score: " + String.valueOf(scoreStack.peek()));
         
         
     }
